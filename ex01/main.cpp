@@ -61,23 +61,33 @@ int printByIndex(std::string command, PhoneBook *pb, int accs_added)
 	return 1;
 }
 
-void promptAdd(std::string fnm, std::string lnm, std::string nnm, std::string pn, std::string ds, PhoneBook *pb)
+int promptAdd(std::string fnm, std::string lnm, std::string nnm, std::string pn, std::string ds, PhoneBook *pb)
 {
 	std::cout << "Add a contact to the phone book\n" ;
 	while(fnm.length() == 0)
 	{
 		std::cout << "first name : " ;
 		std::getline(std::cin, fnm);
+		if(std::cin.eof())
+		{
+			exit(1);
+		}
 	}
 	while(lnm.length() == 0)
 	{
 		std::cout << "last name : " ;
 		std::getline(std::cin, lnm);
+		if(std::cin.eof())
+		{
+			exit(1);
+		}
 	}
 	while(nnm.length() == 0)
 	{
 		std::cout << "nick name : " ;
 		std::getline(std::cin, nnm);
+		if(std::cin.eof())
+			return 0;
 	}
 	while(pn.length() == 0)
 	{
@@ -90,6 +100,7 @@ void promptAdd(std::string fnm, std::string lnm, std::string nnm, std::string pn
 		std::getline(std::cin, ds);
 	}
 	pb->add(fnm, lnm, nnm, pn, ds, indx++);
+	return 1;
 }
 
 int main()
@@ -110,14 +121,21 @@ int main()
 		while(command.length() == 0)
 		{
 			std::getline(std::cin, command);
-    	}
+			if(std::cin.eof())
+			{
+				std::cout << "EOF\n";
+				command = "?";
+			}
+		}
+			
 		if(command == "EXIT")
 			break;
 		if(command == "ADD")
 		{
 			if(indx >= 8)
 				indx = 0;
-			promptAdd(fnm,lnm, nnm, pn, ds, &pb);
+			if(promptAdd(fnm,lnm, nnm, pn, ds, &pb) == 0)
+				return 0;
 			accs_added++;
 			command = "";
 		}
