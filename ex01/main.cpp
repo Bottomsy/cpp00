@@ -123,14 +123,22 @@ int main()
 		}
 		else if(command == "SEARCH")
 		{
-			std::cout << std::setw(10) << "index" << "|"<< std::setw(10) << "first name" << "|"<< std::setw(10) << "last name" << "|"<< std::setw(10) << "nickname" << "\n";
-			printContacts(&pb, accs_added);
-			command = "";
-			std::cout << "Type the contact's index to show extra info\n";
-			std::getline(std::cin, command);
-			if(printByIndex(command, &pb, accs_added) == 0)
-				std::cout << "No contact in that index is found\n";
-			command = "";
+			if(accs_added > 0)
+			{
+				std::cout << std::setw(10) << "index" << "|"<< std::setw(10) << "first name" << "|"<< std::setw(10) << "last name" << "|"<< std::setw(10) << "nickname" << "\n";
+				printContacts(&pb, accs_added);
+				command = "";
+				std::cout << "Type the contact's index to show extra info\n";
+				std::getline(std::cin, command);
+				if(printByIndex(command, &pb, accs_added) == 0)
+					std::cout << "No contact in that index is found\n";
+				command = "";
+			}
+			else
+			{
+				std::cout << "No contacts in the phone book\n";
+				command = "";
+			}
 		}
 		else
 		{
