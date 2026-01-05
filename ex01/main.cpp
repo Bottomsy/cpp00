@@ -42,6 +42,56 @@ int validIndex(std::string command)
 		return 1;
 	return 0;	
 }
+
+int printByIndex(std::string command, PhoneBook *pb, int accs_added)
+{
+	if(validIndex(command))
+	{
+		int value = std::stoi(command);
+		if(value >= accs_added)
+			return 0;
+		std::cout << "first name     - " << pb->contacts[value].firstname << "\n";
+		std::cout << "last name      - " << pb->contacts[value].lastname << "\n";
+		std::cout << "nickname       - " << pb->contacts[value].nickname << "\n";
+		std::cout << "phone number   - " << pb->contacts[value].phonenum << "\n";
+		std::cout << "darkest secret - " << pb->contacts[value].darkest_secret << "\n";
+	}
+	else
+		std::cout << "Invalid index\n";
+	return 1;
+}
+
+void promptAdd(std::string fnm, std::string lnm, std::string nnm, std::string pn, std::string ds, PhoneBook *pb)
+{
+	std::cout << "Add a contact to the phone book\n" ;
+	while(fnm.length() == 0)
+	{
+		std::cout << "first name : " ;
+		std::getline(std::cin, fnm);
+	}
+	while(lnm.length() == 0)
+	{
+		std::cout << "last name : " ;
+		std::getline(std::cin, lnm);
+	}
+	while(nnm.length() == 0)
+	{
+		std::cout << "nick name : " ;
+		std::getline(std::cin, nnm);
+	}
+	while(pn.length() == 0)
+	{
+		std::cout << "phone number : " ;
+		std::getline(std::cin, pn);
+	}
+	while(ds.length() == 0)
+	{
+		std::cout << "darkest secret : " ;
+		std::getline(std::cin, ds);
+	}
+	pb->add(fnm, lnm, nnm, pn, ds, indx++);
+}
+
 int main()
 {
 	std::string fnm;
@@ -67,18 +117,7 @@ int main()
 		{
 			if(indx >= 8)
 				indx = 0;
-			std::cout << "Add a contact to the phone book\nfirst name : " ;
-			std::getline(std::cin, fnm);
-			std::cout << "last name : " ;
-			std::getline(std::cin, lnm);
-			std::cout << "nick name : " ;
-			std::getline(std::cin, nnm);
-			std::cout << "phone number : " ;
-			std::getline(std::cin, pn);
-			std::cout << "darkest secret : " ;
-			std::getline(std::cin, ds);
-			pb.add(fnm, lnm, nnm, pn, ds, indx++);
-			std::cout << "fnm : " << pb.contacts[0].firstname << "\n";
+			promptAdd(fnm,lnm, nnm, pn, ds, &pb);
 			accs_added++;
 			command = "";
 		}
@@ -87,19 +126,10 @@ int main()
 			std::cout << std::setw(10) << "index" << "|"<< std::setw(10) << "first name" << "|"<< std::setw(10) << "last name" << "|"<< std::setw(10) << "nickname" << "\n";
 			printContacts(&pb, accs_added);
 			command = "";
-			std::cout << "Type the contact's index to show extra info or type {no} to go back\n";
+			std::cout << "Type the contact's index to show extra info\n";
 			std::getline(std::cin, command);
-			if(validIndex(command) == 1)
-			{
-				int value = std::stoi(command);
-				std::cout << "first name     - " << pb.contacts[value].firstname << "\n";
-				std::cout << "last name      - " << pb.contacts[value].lastname << "\n";
-				std::cout << "nickname       - " << pb.contacts[value].nickname << "\n";
-				std::cout << "phone number   - " << pb.contacts[value].phonenum << "\n";
-				std::cout << "Darkest secret - " << pb.contacts[value].darkest_secret << "\n";
-			}
-			else
-				std::cout << "Invalid index\n";
+			if(printByIndex(command, &pb, accs_added) == 0)
+				std::cout << "No contact in that index is found\n";
 			command = "";
 		}
 		else
