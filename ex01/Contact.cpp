@@ -17,7 +17,7 @@ void Contact::setNickName(std::string name)
 
 void Contact::setPhoneNum(std::string name)
 {
-	nickname = name;
+	phonenum = name;
 }
 
 void Contact::setDarkestSecret(std::string name)
