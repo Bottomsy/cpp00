@@ -50,7 +50,7 @@ int printByIndex(std::string command, PhoneBook *pb, int accs_added)
 {
 	if(validIndex(command))
 	{
-		int value = std::stoi(command);
+		int value = command[0] - '0';
 		if(value >= accs_added)
 			return 0;
 		std::cout << "first name     - " << pb->getContact(value).getFirstName() << "\n";
@@ -114,7 +114,6 @@ int main()
 	std::string pn;
 	std::string ds;
 	std::string command;
-	int i = 0;
 	PhoneBook pb;
 	int accs_added = 0;
 

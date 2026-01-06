@@ -1,27 +1,24 @@
-CPP = c++
+NAME = PhoneBook
 
-CPPFLAGS = -Wall -Wextra -Werror
+CXX = c++
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRC = ./bonus/mlx/mlx_hooks_bonus.c ./bonus/mlx/mlx_bonus.c \
-                ./bonus/parsing/checks_bonus.c ./bonus/parsing/checks2_bonus.c \
-
-OBJS = $(SRC:.c=.o)
-
-NAME = cub3d
+SRCS = main.cpp Contact.cpp PhoneBook.cpp
+OBJS = $(SRCS:.cpp=.o)
 
 all: $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 $(NAME): $(OBJS)
-	$(CPP) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 
