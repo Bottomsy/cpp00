@@ -9,28 +9,31 @@ void printContacts(PhoneBook *pb, int accs_added)
 	int i = 0;
 	while(i < accs_added)
 	{
+		std::string fnm = pb->getContact(i).getFirstName();
+		std::string lnm = pb->getContact(i).getLastName();
+		std::string nnm = pb->getContact(i).getNickName();
 		std::cout << std::setw(10) << i << "|";
-		if(pb->contacts[i].firstname.length() > 10)
+		if(fnm.length() > 10)
 		{
-			pb->contacts[i].firstname.resize(9);
-			std::cout << std::setw(10) << pb->contacts[i].firstname << ".|";
+			fnm.resize(9);
+			std::cout <<  fnm << ".|";
 		}
 		else
-			std::cout << std::setw(10) << pb->contacts[i].firstname << "|";
-		if(pb->contacts[i].lastname.length() > 10)
+			std::cout << std::setw(10) << fnm << "|";
+		if(lnm.length() > 10)
 		{
-			pb->contacts[i].lastname.resize(9);
-			std::cout << std::setw(10) << pb->contacts[i].lastname << ".|";
+			lnm.resize(9);
+			std::cout << lnm << ".|";
 		}
 		else
-			std::cout << std::setw(10) << pb->contacts[i].lastname << "|";
-		if(pb->contacts[i].nickname.length() > 10)
+			std::cout << std::setw(10) << lnm << "|";
+		if(nnm.length() > 10)
 		{
-			pb->contacts[i].nickname.resize(9);
-			std::cout << std::setw(10) << pb->contacts[i].nickname << ".\n";
+			nnm.resize(9);
+			std::cout <<  nnm << ".\n";
 		}
 		else
-			std::cout << std::setw(10) << pb->contacts[i].nickname << "\n";
+			std::cout << std::setw(10) << nnm << "\n";
 		i++;
 	}
 }
@@ -50,11 +53,11 @@ int printByIndex(std::string command, PhoneBook *pb, int accs_added)
 		int value = std::stoi(command);
 		if(value >= accs_added)
 			return 0;
-		std::cout << "first name     - " << pb->contacts[value].firstname << "\n";
-		std::cout << "last name      - " << pb->contacts[value].lastname << "\n";
-		std::cout << "nickname       - " << pb->contacts[value].nickname << "\n";
-		std::cout << "phone number   - " << pb->contacts[value].phonenum << "\n";
-		std::cout << "darkest secret - " << pb->contacts[value].darkest_secret << "\n";
+		std::cout << "first name     - " << pb->getContact(value).getFirstName() << "\n";
+		std::cout << "last name      - " << pb->getContact(value).getLastName() << "\n";
+		std::cout << "nickname       - " << pb->getContact(value).getNickName() << "\n";
+		std::cout << "phone number   - " << pb->getContact(value).getPhoneNum() << "\n";
+		std::cout << "darkest secret - " << pb->getContact(value).getDarkestSecret() << "\n";
 	}
 	else
 		std::cout << "Invalid index\n";
@@ -69,18 +72,14 @@ int promptAdd(std::string fnm, std::string lnm, std::string nnm, std::string pn,
 		std::cout << "first name : " ;
 		std::getline(std::cin, fnm);
 		if(std::cin.eof())
-		{
-			exit(1);
-		}
+			return 0;
 	}
 	while(lnm.length() == 0)
 	{
 		std::cout << "last name : " ;
 		std::getline(std::cin, lnm);
 		if(std::cin.eof())
-		{
-			exit(1);
-		}
+			return 0;
 	}
 	while(nnm.length() == 0)
 	{
@@ -93,11 +92,15 @@ int promptAdd(std::string fnm, std::string lnm, std::string nnm, std::string pn,
 	{
 		std::cout << "phone number : " ;
 		std::getline(std::cin, pn);
+		if(std::cin.eof())
+			return 0;
 	}
 	while(ds.length() == 0)
 	{
 		std::cout << "darkest secret : " ;
 		std::getline(std::cin, ds);
+		if(std::cin.eof())
+			return 0;
 	}
 	pb->add(fnm, lnm, nnm, pn, ds, indx++);
 	return 1;
@@ -122,12 +125,8 @@ int main()
 		{
 			std::getline(std::cin, command);
 			if(std::cin.eof())
-			{
-				std::cout << "EOF\n";
-				command = "?";
-			}
+				return 0;
 		}
-			
 		if(command == "EXIT")
 			break;
 		if(command == "ADD")
@@ -136,7 +135,8 @@ int main()
 				indx = 0;
 			if(promptAdd(fnm,lnm, nnm, pn, ds, &pb) == 0)
 				return 0;
-			accs_added++;
+			if(accs_added < 8)
+				accs_added++;
 			command = "";
 		}
 		else if(command == "SEARCH")
@@ -148,6 +148,8 @@ int main()
 				command = "";
 				std::cout << "Type the contact's index to show extra info\n";
 				std::getline(std::cin, command);
+				if(std::cin.eof())
+					return 0;
 				if(printByIndex(command, &pb, accs_added) == 0)
 					std::cout << "No contact in that index is found\n";
 				command = "";
@@ -163,6 +165,5 @@ int main()
 			std::cout << "command not recognized\n" ;
 			command = "";	
 		}
-
 	}
 }

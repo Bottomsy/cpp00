@@ -9,3 +9,7 @@ void PhoneBook:: add(std::string fnm, std::string lnm, std::string nnm, std::str
 	contacts[i].setPhoneNum(pn);
 	contacts[i].setDarkestSecret(ds);
 }
+ Contact PhoneBook::getContact(int i)
+ {
+	return contacts[i];
+ }

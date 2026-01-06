@@ -24,3 +24,23 @@ void Contact::setDarkestSecret(std::string name)
 {
 	darkest_secret = name;
 }
+	std::string Contact::getFirstName()
+	{
+		return firstname;
+	}
+	std::string Contact::getLastName()
+	{
+		return lastname;
+	}
+	std::string Contact::getNickName()
+	{
+		return nickname;
+	}
+	std::string Contact::getPhoneNum()
+	{
+		return phonenum;
+	}
+	std::string Contact::getDarkestSecret()
+	{
+		return darkest_secret;
+	}
